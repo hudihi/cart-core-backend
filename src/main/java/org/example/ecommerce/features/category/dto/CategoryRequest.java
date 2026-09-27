@@ -1,4 +1,4 @@
 package org.example.ecommerce.features.category.dto;
 
-public class CategoryRequest {
+public record CategoryRequest(String name, String slug) {
 }
