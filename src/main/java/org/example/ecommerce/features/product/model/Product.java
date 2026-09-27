@@ -3,7 +3,9 @@ package org.example.ecommerce.features.product.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.example.ecommerce.common.BaseAuditEntity;
 import org.example.ecommerce.features.category.model.Category;
 import org.example.ecommerce.features.image.model.ProductImage;
 
@@ -13,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
-public class Product {
+public class Product extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +56,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
 
     //helper methods for ensure synchronize for both sid
     public void addImage(ProductImage image){

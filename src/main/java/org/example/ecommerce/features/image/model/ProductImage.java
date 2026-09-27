@@ -4,17 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.example.ecommerce.common.BaseAuditEntity;
 import org.example.ecommerce.features.product.model.Product;
 
 import java.time.Instant;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product_images")
-public class ProductImage {
+public class ProductImage extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +37,4 @@ public class ProductImage {
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt = Instant.now();
 }
