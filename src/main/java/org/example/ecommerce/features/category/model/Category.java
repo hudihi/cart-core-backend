@@ -1,4 +1,4 @@
-package org.example.ecommercebackend.features.category.model;
+package org.example.ecommerce.features.category.model;
 
 
 import jakarta.persistence.*;

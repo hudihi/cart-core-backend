@@ -1,4 +1,4 @@
-package org.example.ecommercebackend;
+package org.example.ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
