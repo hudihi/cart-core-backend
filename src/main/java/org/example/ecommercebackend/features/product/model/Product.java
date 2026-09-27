@@ -1,4 +1,4 @@
-package org.example.ecommercebackend.modules.product.model;
+package org.example.ecommercebackend.features.product.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
