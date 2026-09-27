@@ -1,9 +1,11 @@
 package org.example.ecommerce.features.product.dto;
 
 import org.example.ecommerce.features.category.dto.CategoryResponse;
+import org.example.ecommerce.features.image.dto.ProductImageResponse;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.List;
 
 public record ProductResponse(
         String name,
