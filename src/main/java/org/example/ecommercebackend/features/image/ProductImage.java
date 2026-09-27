@@ -18,7 +18,7 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url",unique = true, nullable = false)
     private String url;
 
     @Column(name = "is_active", nullable = false)

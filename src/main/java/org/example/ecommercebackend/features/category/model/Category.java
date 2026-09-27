@@ -19,11 +19,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "slug", nullable = false)
-    private String slud;
+    @Column(name = "slug", unique = true, nullable = false)
+    private String slug;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
