@@ -11,7 +11,7 @@ import java.time.Instant;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "product_image")
+@Table(name = "product_images")
 public class ProductImage {
 
     @Id

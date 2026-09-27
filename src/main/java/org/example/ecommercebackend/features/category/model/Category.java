@@ -12,7 +12,7 @@ import java.time.Instant;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
 
     @Id
