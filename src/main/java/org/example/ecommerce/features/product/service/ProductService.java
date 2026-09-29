@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ProductService {
     Product createProduct(Product product);
     Product getProduct(Long id);
-    List<Product> listProducts();
+    List<ProductResponse> listProducts();
     Product updateProduct(Long id, Product product);
     void deleteProduct(Long id);
 }

@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:latest
+    image: mysql
     container_name: shop-mysql
     environment:
       MYSQL_DATABASE: shop
@@ -8,7 +8,7 @@ services:
       MYSQL_PASSWORD: shop
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -21,6 +21,10 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
+      - PMA_USERNAME=shop
+      - MYSQL_ROOT_PASSWORD=root
+    depends_on:
+      - mysql
 
 volumes:
   mysql_data:

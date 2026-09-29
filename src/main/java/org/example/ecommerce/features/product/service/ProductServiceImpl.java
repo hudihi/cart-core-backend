@@ -1,5 +1,9 @@
 package org.example.ecommerce.features.product.service;
 
+import org.example.ecommerce.features.category.dto.CategoryResponse;
+import org.example.ecommerce.features.category.model.Category;
+import org.example.ecommerce.features.image.dto.ProductImageResponse;
+import org.example.ecommerce.features.image.model.ProductImage;
 import org.example.ecommerce.features.product.dto.ProductRequest;
 import org.example.ecommerce.features.product.dto.ProductResponse;
 import org.example.ecommerce.features.product.dto.ProductUpdateRequest;
@@ -33,8 +37,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> listProducts() {
-        return repo.findAll();
+    public List<ProductResponse> listProducts() {
+        return repo.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
@@ -55,5 +62,42 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         repo.deleteById(id);
+    }
+
+
+    private ProductResponse mapToResponse(Product product){
+        CategoryResponse categoryResponse = null;
+        if (product.getCategory() != null){
+            categoryResponse = new CategoryResponse(
+                    product.getCategory().getId(),
+                    product.getCategory().getName()
+            );
+        }
+
+        List<ProductImageResponse> productImageResponses = null;
+        if (product.getImages() != null){
+            productImageResponses = product.getImages().stream()
+                    .map(
+                            img -> new ProductImageResponse(
+                                    img.getId(),
+                                    img.getUrl(),
+                                    img.isPrimary(),
+                                    img.getSortOrder()))
+                    .toList();
+        }
+
+
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getCurrency(),
+                product.getUnitMeasure(),
+                product.getStockQuantity(),
+                product.isActive(),
+                categoryResponse,
+                productImageResponses
+        );
     }
 }
