@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.example.ecommerce.common.BaseAuditEntity;
 import org.example.ecommerce.features.category.model.Category;
 import org.example.ecommerce.features.image.model.ProductImage;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -21,6 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
+@DynamicInsert
+@DynamicUpdate
 public class Product extends BaseAuditEntity {
 
     @Id

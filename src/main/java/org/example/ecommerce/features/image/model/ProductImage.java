@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.example.ecommerce.common.BaseAuditEntity;
 import org.example.ecommerce.features.product.model.Product;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.Instant;
 
@@ -17,6 +19,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product_images")
+@DynamicInsert
+@DynamicUpdate
 public class ProductImage extends BaseAuditEntity {
 
     @Id
