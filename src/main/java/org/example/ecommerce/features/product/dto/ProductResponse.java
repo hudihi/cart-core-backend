@@ -9,7 +9,6 @@ import java.util.Currency;
 import java.util.List;
 
 public record ProductResponse(
-        Long id,
         String name,
         String description,
         BigDecimal price,

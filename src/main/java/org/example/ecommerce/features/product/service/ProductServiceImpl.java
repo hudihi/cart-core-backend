@@ -69,7 +69,6 @@ public class ProductServiceImpl implements ProductService {
         CategoryResponse categoryResponse = null;
         if (product.getCategory() != null){
             categoryResponse = new CategoryResponse(
-                    product.getCategory().getId(),
                     product.getCategory().getName()
             );
         }
@@ -79,7 +78,6 @@ public class ProductServiceImpl implements ProductService {
             productImageResponses = product.getImages().stream()
                     .map(
                             img -> new ProductImageResponse(
-                                    img.getId(),
                                     img.getUrl(),
                                     img.isPrimary(),
                                     img.getSortOrder()))
@@ -88,7 +86,6 @@ public class ProductServiceImpl implements ProductService {
 
 
         return new ProductResponse(
-                product.getId(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
