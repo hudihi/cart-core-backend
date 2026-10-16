@@ -1,5 +1,6 @@
 package org.example.ecommerce.features.product.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ecommerce.features.category.dto.CategoryResponse;
 import org.example.ecommerce.features.category.model.Category;
 import org.example.ecommerce.features.image.dto.ProductImageResponse;
@@ -15,25 +16,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repo;
 
-    ProductServiceImpl(ProductRepository repo){
-        this.repo = repo;
-    }
-
 
     @Override
     public void createProduct(ProductRequest product) {
+        var product =
         return repo.save(product);
     }
 
     @Override
-    public Product getProduct(Long id) {
-        return repo.findById(id).orElseThrow(
-                () -> new RuntimeException("Product not found with id: " + id)
-        );
+    public ProductResponse getProduct(Long id) {
+        var product = repo.findById(id).orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        return mapToResponse(product);
     }
 
     @Override
