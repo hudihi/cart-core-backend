@@ -14,8 +14,7 @@ public record ProductRequest(
         @NotBlank(message = "Product description is mandatory")
         String description,
 
-        @NotEmpty(message = "Product price is mandatory")
-        @NotBlank(message = "Product price is mandatory")
+        @NotNull(message = "price must be provided")
         @DecimalMin(value = "1000.00", message = "Price should be not less than 1000.00")
         @DecimalMax(value = "999,999,999", message = "Price should not exceed 999,999,999")
         @PositiveOrZero(message = "Price cannot be negative")
@@ -29,11 +28,13 @@ public record ProductRequest(
         @NotEmpty(message = "Unit Measure is mandatory")
         String unitMeasure,
 
-        @NotBlank(message = "Stock Quantity is mandatory")
-        @NotEmpty(message = "StockQuantity is mandatory")
+        @NotNull(message = "Stock quantity must be specified")
         Integer stockQuantity,
 
         @NotEmpty(message = "state of the product is mandatory")
         @NotBlank(message = "state of the product is mandatory")
-        boolean isActive
+        boolean isActive,
+
+        @NotNull(message = "category ID is mandatory")
+        Long categoryId
         ) { }
