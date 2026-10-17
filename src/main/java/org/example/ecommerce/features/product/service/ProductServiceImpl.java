@@ -1,98 +1,75 @@
 package org.example.ecommerce.features.product.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.ecommerce.features.category.dto.CategoryResponse;
 import org.example.ecommerce.features.category.model.Category;
-import org.example.ecommerce.features.image.dto.ProductImageResponse;
-import org.example.ecommerce.features.image.model.ProductImage;
+import org.example.ecommerce.features.category.repository.CategoryRepository;
 import org.example.ecommerce.features.product.dto.ProductRequest;
 import org.example.ecommerce.features.product.dto.ProductResponse;
-import org.example.ecommerce.features.product.dto.ProductUpdateRequest;
+import org.example.ecommerce.features.product.exception.ProductNotFoundException;
+import org.example.ecommerce.features.product.mapper.ProductMapper;
 import org.example.ecommerce.features.product.model.Product;
 import org.example.ecommerce.features.product.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository repo;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
 
     @Override
-    public void createProduct(ProductRequest product) {
-        var product =
-        return repo.save(product);
+    public ProductResponse createProduct(ProductRequest request) {
+        Product product = productMapper.toEntity(request);
+        Category category = categoryRepository.getReferenceById(request.categoryId());
+        product.setCategory(category);
+        Product saveProduct = productRepository.save(product);
+        return productMapper.toResponse(saveProduct);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse getProduct(Long id) {
-        var product = repo.findById(id).orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-        return mapToResponse(product);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        return productMapper.toResponse(product);
     }
 
     @Override
-    public List<ProductResponse> listProducts() {
-        return repo.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> listProducts(Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMapper::toResponse);
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        Product existProduct = repo.findById(id).orElseThrow(
-                () -> new RuntimeException("Product with id " + id + "not found")
-        );
-
-        existProduct.setName(product.getName() != null ? product.getName() : existProduct.getName());
-        existProduct.setPrice(product.getPrice() != null ? product.getPrice() : existProduct.getPrice());
-        existProduct.setDescription(product.getDescription() != null ? product.getDescription() : existProduct.getDescription());
-        existProduct.setCurrency(product.getCurrency() != null ? product.getCurrency() : existProduct.getCurrency());
-        existProduct.setActive(product.isActive() || existProduct.isActive());
-
-        return repo.save(existProduct);
+    @Transactional
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        Product existProduct = productRepository.findById(id).orElseThrow(
+                () -> new ProductNotFoundException("Product not found with id:  " + id));
+        productMapper.updateProductFromDto(request, existProduct);
+        if (request.categoryId() != null && !existProduct.getCategory().getId().equals(request.categoryId())){
+            Category newCategory = categoryRepository.getReferenceById(request.categoryId());
+            existProduct.setCategory(newCategory);
+        }
+        Product updatedProduct = productRepository.save(existProduct);
+        return productMapper.toResponse(updatedProduct);
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
-        repo.deleteById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        product.setActive(false);
+        productRepository.save(product);
     }
 
-
-    private ProductResponse mapToResponse(Product product){
-        CategoryResponse categoryResponse = null;
-        if (product.getCategory() != null){
-            categoryResponse = new CategoryResponse(
-                    product.getCategory().getName()
-            );
-        }
-
-        List<ProductImageResponse> productImageResponses = null;
-        if (product.getImages() != null){
-            productImageResponses = product.getImages().stream()
-                    .map(
-                            img -> new ProductImageResponse(
-                                    img.getUrl(),
-                                    img.isPrimary(),
-                                    img.getSortOrder()))
-                    .toList();
-        }
-
-
-        return new ProductResponse(
-                product.getName(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getCurrency(),
-                product.getUnitMeasure(),
-                product.getStockQuantity(),
-                product.isActive(),
-                categoryResponse,
-                productImageResponses
-        );
-    }
 }
