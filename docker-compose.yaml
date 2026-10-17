@@ -1,16 +1,18 @@
 services:
   mysql:
     image: mysql
-    container_name: shop-mysql
+    container_name: ecommerce-database
     environment:
-      MYSQL_DATABASE: shop
-      MYSQL_USER: shop
-      MYSQL_PASSWORD: shop
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - backend-network
 
   phpmyadmin:
     image: phpmyadmin
@@ -25,6 +27,12 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     depends_on:
       - mysql
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: local
 
 volumes:
   mysql_data:
