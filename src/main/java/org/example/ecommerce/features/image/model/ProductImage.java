@@ -27,10 +27,10 @@ public class ProductImage extends BaseAuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "image_url",unique = true, nullable = false)
-    private String url;
+    @Column(name = "image_url",nullable = false, length = 500)
+    private String imageUrl;
 
-    @Column(name = "is_primary", nullable = false)
+    @Column(name = "is_primary")
     private boolean isPrimary = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
