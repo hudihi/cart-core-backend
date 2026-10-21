@@ -31,26 +31,28 @@ services:
       - backend-network
 
   localstack:
-    image: localstack/localstack:latest
+    image: docker.io/library/minio:latest
     container_name: minio_storage
     ports:
-      - "4566:4566"
+      - "4566:9000"
+      - "9001:9001"
     environment:
-      SERVICES: s3
-      DEBUG: 1
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    command: server /data --console-address ":9001"
     volumes:
-      - minio_data:/tmp/localstack
+      - minio_data:/data
     healthcheck:
-      test: ["CMD", "awslocal", "s3", "ls"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
       retries: 3
     networks:
       - backend-network
 
 networks:
   backend-network:
-    driver: local
+    driver: bridge
 
 volumes:
   minio_data:
