@@ -11,8 +11,6 @@ import org.example.ecommerce.features.product.model.Product;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.Instant;
-
 @EqualsAndHashCode(callSuper = false)
 @Data
 @Entity

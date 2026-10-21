@@ -23,25 +23,28 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
-      - PMA_USERNAME=shop
-      - MYSQL_ROOT_PASSWORD=root
+      - PMA_USERNAME=username
+      - MYSQL_ROOT_PASSWORD=password
     depends_on:
       - mysql
     networks:
       - backend-network
 
-  minio:
-    image: minio/minio:latest
+  localstack:
+    image: localstack/localstack:latest
     container_name: minio_storage
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "4566:4566"
     environment:
-      MINIO_ROOT_USER: "admin"
-      MINIO_ROOT_PASSWORD: "password123"
-    command: server /data --console-address ":9001"
+      SERVICES: s3
+      DEBUG: 1
     volumes:
-      - minio_data:/data
+      - minio_data:/tmp/localstack
+    healthcheck:
+      test: ["CMD", "awslocal", "s3", "ls"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - backend-network
 
@@ -52,4 +55,3 @@ networks:
 volumes:
   minio_data:
   mysql_data:
-
