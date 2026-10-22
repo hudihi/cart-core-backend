@@ -20,8 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
-@DynamicInsert
-@DynamicUpdate
 public class Category extends BaseAuditEntity {
 
     @Id
