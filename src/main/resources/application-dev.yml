@@ -24,3 +24,8 @@ minio:
   access-key: admin
   secret-key: password123
   bucket-name: ecommerce-products
+
+application:
+  security:
+    jwt:
+      secret-key: 8b2738f163da4273c02de153dbc97981552f9fcfa15db8fd8f6d0ef096eaea2a
