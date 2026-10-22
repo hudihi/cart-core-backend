@@ -1,5 +1,6 @@
 package org.example.ecommerce.features.category.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -9,6 +10,6 @@ public record CategoryRequest(
         String name,
         String slug,
         String description,
-        boolean isActive
+        boolean active
 ) {
 }
