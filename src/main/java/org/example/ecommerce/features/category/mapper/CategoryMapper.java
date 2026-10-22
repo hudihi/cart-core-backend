@@ -15,6 +15,7 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
         unmappedTargetPolicy = IGNORE
 )
 public interface CategoryMapper {
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "products", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
